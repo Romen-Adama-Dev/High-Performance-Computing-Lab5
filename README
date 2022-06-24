@@ -1,0 +1,9 @@
+README
+my_program.c = 58 memory access
+mat_vec = 26 memory access
+tmeas = 13 memory access 
+mac_vec_1 = 26 memory access
+
+Dear Professor, I don't think I fully understood the task set. 
+I have followed the guidelines as they are explained in the document and I do not understand what to do or how to develop it. Up to point 5, it is like previous practices, so no problems, but from point 6 onwards I have not understood what to do. I understand that you have to improve the existing algorithm, but an algorithm with two "for" loops I can't think how to optimize them. For the rest I used the tool you provided to see how the codes work at a low level (x86-64) and I attach doc, screenshots and the results of all the exercises attached in the zip. For the compiled ones use the .txt extension.
+I hope that if you read this txt, you can comment me by mail and help me to understand what was required.

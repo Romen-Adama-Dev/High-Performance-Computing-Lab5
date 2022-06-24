@@ -1,0 +1,35 @@
+tstart:
+        push    rbp
+        mov     rbp, rsp
+        mov     esi, OFFSET FLAT:start
+        mov     edi, 0
+        call    clock_gettime
+        nop
+        pop     rbp
+        ret
+tstop:
+        push    rbp
+        mov     rbp, rsp
+        mov     esi, OFFSET FLAT:stop
+        mov     edi, 0
+        call    clock_gettime
+        mov     rax, QWORD PTR stop[rip]
+        mov     rdx, QWORD PTR start[rip]
+        sub     rax, rdx
+        pxor    xmm1, xmm1
+        cvtsi2sd        xmm1, rax
+        mov     rax, QWORD PTR stop[rip+8]
+        mov     rdx, QWORD PTR start[rip+8]
+        sub     rax, rdx
+        pxor    xmm0, xmm0
+        cvtsi2sd        xmm0, rax
+        movsd   xmm2, QWORD PTR .LC0[rip]
+        divsd   xmm0, xmm2
+        addsd   xmm0, xmm1
+        movq    rax, xmm0
+        movq    xmm0, rax
+        pop     rbp
+        ret
+.LC0:
+        .long   0
+        .long   1104006501

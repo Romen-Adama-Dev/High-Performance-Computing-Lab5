@@ -1,0 +1,151 @@
+.LC2:
+        .string "start"
+.LC3:
+        .string "end"
+.LC4:
+        .string "Time: %lf\n"
+.LC5:
+        .string "TEST"
+.LC8:
+        .string "Error %d!\n"
+main:
+        push    rbp
+        mov     rbp, rsp
+        sub     rsp, 48
+        mov     DWORD PTR [rbp-12], 1
+        movsd   xmm0, QWORD PTR .LC0[rip]
+        movsd   QWORD PTR [rbp-24], xmm0
+        pxor    xmm0, xmm0
+        movsd   QWORD PTR [rbp-32], xmm0
+        mov     DWORD PTR [rbp-4], 0
+        jmp     .L2
+.L3:
+        pxor    xmm0, xmm0
+        cvtsi2sd        xmm0, DWORD PTR [rbp-4]
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        movsd   QWORD PTR a.3[0+rax*8], xmm0
+        add     DWORD PTR [rbp-4], 1
+.L2:
+        cmp     DWORD PTR [rbp-4], 24999999
+        jle     .L3
+        mov     DWORD PTR [rbp-4], 0
+        jmp     .L4
+.L5:
+        mov     eax, 5000
+        sub     eax, DWORD PTR [rbp-4]
+        pxor    xmm0, xmm0
+        cvtsi2sd        xmm0, eax
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        movsd   QWORD PTR x.2[0+rax*8], xmm0
+        add     DWORD PTR [rbp-4], 1
+.L4:
+        cmp     DWORD PTR [rbp-4], 4999
+        jle     .L5
+        mov     DWORD PTR [rbp-36], 5000
+        mov     edi, OFFSET FLAT:.LC2
+        call    puts
+        mov     eax, 0
+        call    tstart
+        mov     eax, DWORD PTR [rbp-36]
+        mov     ecx, eax
+        mov     edx, OFFSET FLAT:y.1
+        mov     esi, OFFSET FLAT:x.2
+        mov     edi, OFFSET FLAT:a.3
+        call    mat_vec
+        mov     eax, 0
+        call    tstop
+        pxor    xmm0, xmm0
+        cvtsi2sd        xmm0, eax
+        movsd   QWORD PTR [rbp-48], xmm0
+        mov     edi, OFFSET FLAT:.LC3
+        call    puts
+        mov     rax, QWORD PTR [rbp-48]
+        movq    xmm0, rax
+        mov     edi, OFFSET FLAT:.LC4
+        mov     eax, 1
+        call    printf
+        mov     edi, OFFSET FLAT:.LC5
+        call    puts
+        mov     DWORD PTR [rbp-4], 0
+        jmp     .L6
+.L9:
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        pxor    xmm0, xmm0
+        movsd   QWORD PTR z.0[0+rax*8], xmm0
+        mov     DWORD PTR [rbp-8], 0
+        jmp     .L7
+.L8:
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        movsd   xmm1, QWORD PTR z.0[0+rax*8]
+        mov     eax, DWORD PTR [rbp-36]
+        imul    eax, DWORD PTR [rbp-8]
+        mov     edx, eax
+        mov     eax, DWORD PTR [rbp-4]
+        add     eax, edx
+        cdqe
+        movsd   xmm2, QWORD PTR a.3[0+rax*8]
+        mov     eax, DWORD PTR [rbp-8]
+        cdqe
+        movsd   xmm0, QWORD PTR x.2[0+rax*8]
+        mulsd   xmm0, xmm2
+        addsd   xmm0, xmm1
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        movsd   QWORD PTR z.0[0+rax*8], xmm0
+        add     DWORD PTR [rbp-8], 1
+.L7:
+        mov     eax, DWORD PTR [rbp-8]
+        cmp     eax, DWORD PTR [rbp-36]
+        jl      .L8
+        add     DWORD PTR [rbp-4], 1
+.L6:
+        mov     eax, DWORD PTR [rbp-4]
+        cmp     eax, DWORD PTR [rbp-36]
+        jl      .L9
+        mov     DWORD PTR [rbp-4], 0
+        jmp     .L10
+.L13:
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        movsd   xmm0, QWORD PTR y.1[0+rax*8]
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        movsd   xmm1, QWORD PTR z.0[0+rax*8]
+        subsd   xmm0, xmm1
+        movq    xmm1, QWORD PTR .LC6[rip]
+        andpd   xmm0, xmm1
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        movsd   xmm2, QWORD PTR z.0[0+rax*8]
+        movsd   xmm1, QWORD PTR .LC7[rip]
+        mulsd   xmm1, xmm2
+        comisd  xmm0, xmm1
+        jbe     .L11
+        mov     eax, DWORD PTR [rbp-4]
+        mov     esi, eax
+        mov     edi, OFFSET FLAT:.LC8
+        mov     eax, 0
+        call    printf
+.L11:
+        add     DWORD PTR [rbp-4], 1
+.L10:
+        cmp     DWORD PTR [rbp-4], 4999
+        jle     .L13
+        mov     eax, 0
+        leave
+        ret
+.LC0:
+        .long   0
+        .long   1072693248
+.LC6:
+        .long   -1
+        .long   2147483647
+        .long   0
+        .long   0
+.LC7:
+        .long   -400107883
+        .long   1041313291

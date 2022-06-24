@@ -1,0 +1,64 @@
+mat_vec:
+        push    rbp
+        mov     rbp, rsp
+        mov     QWORD PTR [rbp-24], rdi
+        mov     QWORD PTR [rbp-32], rsi
+        mov     QWORD PTR [rbp-40], rdx
+        mov     DWORD PTR [rbp-44], ecx
+        mov     DWORD PTR [rbp-4], 0
+        jmp     .L2
+.L5:
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        lea     rdx, [0+rax*8]
+        mov     rax, QWORD PTR [rbp-40]
+        add     rax, rdx
+        pxor    xmm0, xmm0
+        movsd   QWORD PTR [rax], xmm0
+        mov     DWORD PTR [rbp-8], 0
+        jmp     .L3
+.L4:
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        lea     rdx, [0+rax*8]
+        mov     rax, QWORD PTR [rbp-40]
+        add     rax, rdx
+        movsd   xmm1, QWORD PTR [rax]
+        mov     eax, DWORD PTR [rbp-44]
+        imul    eax, DWORD PTR [rbp-8]
+        mov     edx, eax
+        mov     eax, DWORD PTR [rbp-4]
+        add     eax, edx
+        cdqe
+        lea     rdx, [0+rax*8]
+        mov     rax, QWORD PTR [rbp-24]
+        add     rax, rdx
+        movsd   xmm2, QWORD PTR [rax]
+        mov     eax, DWORD PTR [rbp-8]
+        cdqe
+        lea     rdx, [0+rax*8]
+        mov     rax, QWORD PTR [rbp-32]
+        add     rax, rdx
+        movsd   xmm0, QWORD PTR [rax]
+        mulsd   xmm0, xmm2
+        mov     eax, DWORD PTR [rbp-4]
+        cdqe
+        lea     rdx, [0+rax*8]
+        mov     rax, QWORD PTR [rbp-40]
+        add     rax, rdx
+        addsd   xmm0, xmm1
+        movsd   QWORD PTR [rax], xmm0
+        add     DWORD PTR [rbp-8], 1
+.L3:
+        mov     eax, DWORD PTR [rbp-8]
+        cmp     eax, DWORD PTR [rbp-44]
+        jl      .L4
+        add     DWORD PTR [rbp-4], 1
+.L2:
+        mov     eax, DWORD PTR [rbp-4]
+        cmp     eax, DWORD PTR [rbp-44]
+        jl      .L5
+        nop
+        nop
+        pop     rbp
+        ret
